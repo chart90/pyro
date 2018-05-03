@@ -241,8 +241,8 @@ class ReshapedDistribution(TorchDistribution):
     def rsample(self, sample_shape=torch.Size()):
         return self.base_dist.rsample(sample_shape + self.sample_shape)
 
-    def log_prob(self, value):
-        return sum_rightmost(self.base_dist.log_prob(value), self.reinterpreted_batch_ndims)
+    def log_prob(self, value, *args, **kwargs):
+        return sum_rightmost(self.base_dist.log_prob(value, *args, **kwargs), self.reinterpreted_batch_ndims)
 
     def score_parts(self, value):
         log_prob, score_function, entropy_term = self.base_dist.score_parts(value)
