@@ -29,6 +29,16 @@ Abstract Distribution
     :special-members: __call__
     :show-inheritance:
 
+TorchDistributionMixin
+----------------------
+
+.. autoclass:: pyro.distributions.torch_distribution.TorchDistributionMixin
+    :members:
+    :undoc-members:
+    :special-members: __call__
+    :show-inheritance:
+    :member-order: bysource
+
 TorchDistribution
 -----------------
 
@@ -38,6 +48,13 @@ TorchDistribution
     :special-members: __call__
     :show-inheritance:
     :member-order: bysource
+
+AVFMultivariateNormal
+---------------------
+.. autoclass:: pyro.distributions.AVFMultivariateNormal
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Binomial
 --------
@@ -78,6 +95,20 @@ LowRankMultivariateNormal
 OMTMultivariateNormal
 ---------------------
 .. autoclass:: pyro.distributions.OMTMultivariateNormal
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+RelaxedBernoulliStraightThrough
+-------------------------------
+.. autoclass:: pyro.distributions.RelaxedBernoulliStraightThrough
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+RelaxedOneHotCategoricalStraightThrough
+---------------------------------------
+.. autoclass:: pyro.distributions.RelaxedOneHotCategoricalStraightThrough
     :members:
     :undoc-members:
     :show-inheritance:

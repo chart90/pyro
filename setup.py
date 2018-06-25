@@ -59,7 +59,11 @@ EXTRAS_REQUIRE = [
     'torchvision',
     'visdom>=0.1.4',
     'pandas',
+    'wget',
 ]
+
+if sys.version_info[0] == 2:
+    EXTRAS_REQUIRE.append('functools32')
 
 setup(
     name='pyro-ppl',
@@ -84,7 +88,7 @@ setup(
         'extras': EXTRAS_REQUIRE,
         'test': EXTRAS_REQUIRE + [
             'nbval',
-            'pytest',
+            'pytest>=3.5',
             'pytest-cov',
             'scipy>=0.19.0',
         ],

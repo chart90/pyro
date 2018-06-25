@@ -75,8 +75,8 @@ class GaussianChain(TestCase):
 
         loc_N = next_mean
         with pyro.iarange("data", self.data.size(0)):
-            pyro.sample("obs", dist.Normal(loc_N.expand_as(self.data),
-                                           torch.pow(self.lambdas[self.N], -0.5).expand_as(self.data)), obs=self.data)
+            pyro.sample("obs", dist.Normal(loc_N,
+                                           torch.pow(self.lambdas[self.N], -0.5)), obs=self.data)
         return loc_N
 
     def guide(self, reparameterized, difficulty=0.0):
@@ -152,7 +152,10 @@ class GaussianChainTests(GaussianChain):
             pyro.clear_param_store()
 
         adam = optim.Adam({"lr": lr, "betas": (0.95, 0.999)})
-        svi = SVI(self.model, self.guide, adam, loss=TraceGraph_ELBO())
+        elbo = TraceGraph_ELBO()
+        loss_and_grads = elbo.loss_and_grads
+        # loss_and_grads = elbo.jit_loss_and_grads  # This fails.
+        svi = SVI(self.model, self.guide, adam, loss=elbo.loss, loss_and_grads=loss_and_grads)
 
         for step in range(n_steps):
             t0 = time.time()

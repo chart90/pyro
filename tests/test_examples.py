@@ -8,16 +8,28 @@ import pytest
 
 from tests.common import EXAMPLES_DIR, requires_cuda
 
+pytestmark = pytest.mark.stage('test_examples')
+
+
 CPU_EXAMPLES = [
     ['air/main.py', '--num-steps=1'],
     ['baseball.py', '--num-samples=200', '--warmup-steps=100'],
     ['bayesian_regression.py', '--num-epochs=1'],
+    ['contrib/autoname/scoping_mixture.py', '--num-epochs=1'],
+    ['contrib/autoname/mixture.py', '--num-epochs=1'],
+    ['contrib/autoname/tree_data.py', '--num-epochs=1'],
     ['contrib/gp/sv-dkl.py', '--epochs=1', '--num-inducing=4'],
-    ['contrib/named/mixture.py', '--num-epochs=1'],
-    ['contrib/named/tree_data.py', '--num-epochs=1'],
     ['dmm/dmm.py', '--num-epochs=1'],
     ['dmm/dmm.py', '--num-epochs=1', '--num-iafs=1'],
+    ['eight_schools/mcmc.py', '--num-samples=500', '--warmup-steps=100'],
+    ['eight_schools/svi.py', '--num-epochs=1'],
     ['inclined_plane.py', '--num-samples=1'],
+    ['rsa/generics.py', '--num-samples=10'],
+    ['rsa/hyperbole.py', '--price=10000'],
+    ['rsa/schelling.py', '--num-samples=10'],
+    ['rsa/schelling_false.py', '--num-samples=10'],
+    ['rsa/semantic_parsing.py', '--num-samples=10'],
+    ['sparse_gamma_def.py', '--num-epochs=1'],
     ['vae/ss_vae_M2.py', '--num-epochs=1'],
     ['vae/ss_vae_M2.py', '--num-epochs=1', '--aux-loss'],
     ['vae/ss_vae_M2.py', '--num-epochs=1', '--enum-discrete=parallel'],
@@ -65,7 +77,6 @@ def test_coverage():
                     pytest.fail('Example: {} not covered by CUDA_TESTS.'.format(example))
 
 
-@pytest.mark.stage("test_examples")
 @pytest.mark.parametrize('example,args', CPU_EXAMPLES, ids=make_ids(CPU_EXAMPLES))
 def test_cpu(example, args):
     example = os.path.join(EXAMPLES_DIR, example)
@@ -73,7 +84,6 @@ def test_cpu(example, args):
 
 
 @requires_cuda
-@pytest.mark.stage("test_examples")
 @pytest.mark.parametrize('example,args', CUDA_EXAMPLES, ids=make_ids(CUDA_EXAMPLES))
 def test_cuda(example, args):
     example = os.path.join(EXAMPLES_DIR, example)

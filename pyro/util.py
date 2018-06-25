@@ -5,6 +5,7 @@ import numbers
 import random
 import warnings
 from collections import defaultdict
+from contextlib import contextmanager
 
 import graphviz
 import torch
@@ -206,7 +207,7 @@ def check_site_shape(site, max_iarange_nesting):
                     'at site "{}" within iarange("", dim={}), dim collision'.format(site["name"], f.name, f.dim),
                     'Try setting dim arg in other iaranges.']))
             expected_shape[f.dim] = f.size
-    expected_shape = [1 if e is None else e for e in expected_shape]
+    expected_shape = [-1 if e is None else e for e in expected_shape]
 
     # Check for iarange stack overflow.
     if len(expected_shape) > max_iarange_nesting:
@@ -280,6 +281,18 @@ def check_traceenum_requirements(model_trace, guide_trace):
             irange_counters[name] = irange_counter
             if name in enumerated_sites:
                 enumerated_contexts[context].add(name)
+
+
+@contextmanager
+def optional(context_manager, condition):
+    """
+    Optionally wrap inside `context_manager` if condition is `True`.
+    """
+    if condition:
+        with context_manager:
+            yield
+    else:
+        yield
 
 
 def deep_getattr(obj, name):
